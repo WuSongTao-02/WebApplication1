@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="StuModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Grade">
+          <Key>
+            <PropertyRef Name="GId" />
+          </Key>
+          <Property Name="GId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Stu">
+          <Key>
+            <PropertyRef Name="StuId" />
+          </Key>
+          <Property Name="StuId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StuName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sex" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="GId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Grade_Grade">
+          <End Role="Grade" Type="Self.Grade" Multiplicity="1" />
+          <End Role="Grade1" Type="Self.Grade" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Grade">
+              <PropertyRef Name="GId" />
+            </Principal>
+            <Dependent Role="Grade1">
+              <PropertyRef Name="GId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stu_Grade">
+          <End Role="Grade" Type="Self.Grade" Multiplicity="1" />
+          <End Role="Stu" Type="Self.Stu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grade">
+              <PropertyRef Name="GId" />
+            </Principal>
+            <Dependent Role="Stu">
+              <PropertyRef Name="GId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StuModelStoreContainer">
+          <EntitySet Name="Grade" EntityType="Self.Grade" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stu" EntityType="Self.Stu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Grade_Grade" Association="Self.FK_Grade_Grade">
+            <End Role="Grade" EntitySet="Grade" />
+            <End Role="Grade1" EntitySet="Grade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stu_Grade" Association="Self.FK_Stu_Grade">
+            <End Role="Grade" EntitySet="Grade" />
+            <End Role="Stu" EntitySet="Stu" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="StuModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Grade">
+          <Key>
+            <PropertyRef Name="GId" />
+          </Key>
+          <Property Name="GId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Grade1" Relationship="Self.FK_Grade_Grade" FromRole="Grade" ToRole="Grade1" />
+          <NavigationProperty Name="Grade2" Relationship="Self.FK_Grade_Grade" FromRole="Grade1" ToRole="Grade" />
+          <NavigationProperty Name="Stu" Relationship="Self.FK_Stu_Grade" FromRole="Grade" ToRole="Stu" />
+        </EntityType>
+        <EntityType Name="Stu">
+          <Key>
+            <PropertyRef Name="StuId" />
+          </Key>
+          <Property Name="StuId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StuName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sex" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="GId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Grade" Relationship="Self.FK_Stu_Grade" FromRole="Stu" ToRole="Grade" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Grade_Grade">
+          <End Role="Grade" Type="Self.Grade" Multiplicity="1" />
+          <End Role="Grade1" Type="Self.Grade" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Grade">
+              <PropertyRef Name="GId" />
+            </Principal>
+            <Dependent Role="Grade1">
+              <PropertyRef Name="GId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stu_Grade">
+          <End Role="Grade" Type="Self.Grade" Multiplicity="1" />
+          <End Role="Stu" Type="Self.Stu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grade">
+              <PropertyRef Name="GId" />
+            </Principal>
+            <Dependent Role="Stu">
+              <PropertyRef Name="GId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StuEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Grade" EntityType="Self.Grade" />
+          <EntitySet Name="Stu" EntityType="Self.Stu" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_Grade_Grade" Association="Self.FK_Grade_Grade">
+            <End Role="Grade" EntitySet="Grade" />
+            <End Role="Grade1" EntitySet="Grade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stu_Grade" Association="Self.FK_Stu_Grade">
+            <End Role="Grade" EntitySet="Grade" />
+            <End Role="Stu" EntitySet="Stu" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="StuModelStoreContainer" CdmEntityContainer="StuEntities">
+          <EntitySetMapping Name="Grade">
+            <EntityTypeMapping TypeName="StuModel.Grade">
+              <MappingFragment StoreEntitySet="Grade">
+                <ScalarProperty Name="GId" ColumnName="GId" />
+                <ScalarProperty Name="GName" ColumnName="GName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stu">
+            <EntityTypeMapping TypeName="StuModel.Stu">
+              <MappingFragment StoreEntitySet="Stu">
+                <ScalarProperty Name="StuId" ColumnName="StuId" />
+                <ScalarProperty Name="StuName" ColumnName="StuName" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="GId" ColumnName="GId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="StuModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
